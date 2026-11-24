@@ -44,6 +44,11 @@ flowchart LR
     F --> G[PCA9685]
     G --> H[Servos]
 ```
+### ROS node graph
+
+The ROS node graph as viewed in RQT:
+
+![ROS graph](media/rqt.png)
 
 ## Robot visualization
 
