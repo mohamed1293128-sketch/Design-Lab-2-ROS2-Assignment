@@ -197,4 +197,4 @@ trajectory_msgs/msg/JointTrajectory
 
 ## License
 
-License details have not yet been specified.
+This project is licensed under the [MIT License](LICENSE). See the `LICENSE` file for the full license text.
