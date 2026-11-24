@@ -1,0 +1,166 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- DIMENSIONS -->
+    <xacro:property name="scale" value="3"/>
+
+    <xacro:property name="base_length" value="${0.08*scale}"/>
+    <xacro:property name="base_radius" value="${0.05*scale}"/>
+    <xacro:property name="base_mass" value="3.0"/>
+
+    <xacro:property name="l1_length" value="${0.12*scale}"/>
+    <xacro:property name="l1_radius" value="${0.02*scale}"/>
+    <xacro:property name="l1_mass" value="1.0"/>
+
+    <xacro:property name="l2_length" value="${0.15*scale}"/>
+    <xacro:property name="l2_radius" value="${0.018*scale}"/>
+    <xacro:property name="l2_mass" value="1.0"/>
+
+    <xacro:property name="l3_length" value="${0.09*scale}"/>
+    <xacro:property name="l3_radius" value="${0.018*scale}"/>
+    <xacro:property name="l3_mass" value="0.7"/>
+
+    <xacro:property name="ee_length" value="${0.06*scale}"/>
+    <xacro:property name="ee_radius" value="${0.015*scale}"/>
+    <xacro:property name="ee_mass" value="0.3"/>
+
+    <!-- LINKS -->
+
+    <link name="base"/>
+
+    <link name="base_link">
+        <visual>
+            <origin xyz="0 0 ${base_length/2}"/>
+            <geometry>
+                <cylinder radius="${base_radius}" length="${base_length}"/>
+            </geometry>
+            <material name="blue"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 ${base_length/2}"/>
+            <geometry>
+                <cylinder radius="${base_radius}" length="${base_length}"/>
+            </geometry>
+        </collision>
+        <xacro:cylinder_inertial
+            m="${base_mass}" r="${base_radius}" l="${base_length}"
+            x="0" y="0" z="${base_length/2}"/>
+    </link>
+
+    <link name="L1">
+        <visual>
+            <origin xyz="0 0 ${l1_length/2}"/>
+            <geometry>
+                <cylinder radius="${l1_radius}" length="${l1_length}"/>
+            </geometry>
+            <material name="grey"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 ${l1_length/2}"/>
+            <geometry>
+                <cylinder radius="${l1_radius}" length="${l1_length}"/>
+            </geometry>
+        </collision>
+        <xacro:cylinder_inertial
+            m="${l1_mass}" r="${l1_radius}" l="${l1_length}"
+            x="0" y="0" z="${l1_length/2}"/>
+    </link>
+
+    <link name="L2">
+        <visual>
+            <origin xyz="0 0 ${l2_length/2}"/>
+            <geometry>
+                <cylinder radius="${l2_radius}" length="${l2_length}"/>
+            </geometry>
+            <material name="blue"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 ${l2_length/2}"/>
+            <geometry>
+                <cylinder radius="${l2_radius}" length="${l2_length}"/>
+            </geometry>
+        </collision>
+        <xacro:cylinder_inertial
+            m="${l2_mass}" r="${l2_radius}" l="${l2_length}"
+            x="0" y="0" z="${l2_length/2}"/>
+    </link>
+
+    <link name="L3">
+        <visual>
+            <origin xyz="0 0 ${l3_length/2}"/>
+            <geometry>
+                <cylinder radius="${l3_radius}" length="${l3_length}"/>
+            </geometry>
+            <material name="grey"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 ${l3_length/2}"/>
+            <geometry>
+                <cylinder radius="${l3_radius}" length="${l3_length}"/>
+            </geometry>
+        </collision>
+        <xacro:cylinder_inertial
+            m="${l3_mass}" r="${l3_radius}" l="${l3_length}"
+            x="0" y="0" z="${l3_length/2}"/>
+    </link>
+
+    <link name="end_effector">
+        <visual>
+            <origin xyz="0 0 ${ee_length/2}"/>
+            <geometry>
+                <cylinder radius="${ee_radius}" length="${ee_length}"/>
+            </geometry>
+            <material name="blue"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 ${ee_length/2}"/>
+            <geometry>
+                <cylinder radius="${ee_radius}" length="${ee_length}"/>
+            </geometry>
+        </collision>
+        <xacro:cylinder_inertial
+            m="${ee_mass}" r="${ee_radius}" l="${ee_length}"
+            x="0" y="0" z="${ee_length/2}"/>
+    </link>
+
+    <!-- JOINTS -->
+
+    <joint name="base_joint" type="fixed">
+        <parent link="base"/>
+        <child link="base_link"/>
+        <origin xyz="0 0 0"/>
+    </joint>
+
+    <joint name="joint1" type="revolute">
+        <parent link="base_link"/>
+        <child link="L1"/>
+        <origin xyz="0 0 ${base_length}"/>
+        <axis xyz="0 0 1"/>
+        <limit lower="${-pi/2}" upper="${pi/2}" effort="10" velocity="2.0"/>
+    </joint>
+
+    <joint name="joint2" type="revolute">
+        <parent link="L1"/>
+        <child link="L2"/>
+        <origin xyz="0 0 ${l1_length}"/>
+        <axis xyz="0 1 0"/>
+        <limit lower="${-pi/2}" upper="${pi/2}" effort="10" velocity="2.0"/>
+    </joint>
+
+    <joint name="joint3" type="revolute">
+        <parent link="L2"/>
+        <child link="L3"/>
+        <origin xyz="0 0 ${l2_length}"/>
+        <axis xyz="0 1 0"/>
+        <limit lower="${-pi/2}" upper="${pi/2}" effort="10" velocity="2.0"/>
+    </joint>
+
+    <joint name="joint4" type="revolute">
+        <parent link="L3"/>
+        <child link="end_effector"/>
+        <origin xyz="0 0 ${l3_length}"/>
+        <axis xyz="0 1 0"/>
+        <limit lower="${-pi/2}" upper="${pi/2}" effort="10" velocity="2.0"/>
+    </joint>
+
+</robot>
